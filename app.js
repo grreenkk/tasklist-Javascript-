@@ -9,17 +9,44 @@ const clearBtn = document.querySelector('.clear-tasks')
 loadAllEventListeners();
 
 function loadAllEventListeners(){
+  document.addEventListener('DOMContentLoaded', getTasks);
+
   form.addEventListener('submit', addTask);
 
   taskList.addEventListener('click', removeTask);
 
   clearBtn.addEventListener('click', clearTasks);
 
-  filter.addEventListener('keyup', filterThru)
+  filter.addEventListener('keyup', filterThru);
 
   
 };
 
+function getTasks(e){
+  let tasks;
+
+  if(localStorage.getItem('tasks') === null){
+    tasks = []
+  }else{
+    tasks = JSON.parse(localStorage.getItem('tasks'));
+  }
+
+  tasks.forEach(function(task){
+    let li = document.createElement('li');
+    li.className = 'collection-item';
+    li.innerHTML = task;
+    let link = document.createElement('a');
+    link.className = 'delete-item secondary-content';
+    let i = document.createElement('i');
+    link.appendChild(i);
+    i.className = "fa fa-remove";
+    li.appendChild(link);
+    taskList.appendChild(li)
+
+  })
+  
+  e.preventDefault();
+}
 
 function addTask(e){
 
